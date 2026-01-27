@@ -1,0 +1,38 @@
+server:
+  port: 58080
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
+spring:
+  application:
+    name: springboot-demo
+  profiles:
+    # 开发环境：dev  测试环境：test  生产环境：prod
+    # 生产环境如果要保证信息安全，可以将application-prod.yml里面的配置信息放到nacos配置里面
+    active: test
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  main:
+    banner-mode: off
+
+
+# 使用本配置时要考虑到安全问题，测试环境随意使用，生产环境一定要添加白名单
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["*"]
+  endpoint:
+    # org.springframework.boot.actuate.autoconfigure.health.HealthEndpointProperties
+    health:
+      show-details: always
+  # org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: ${spring.application.name}
